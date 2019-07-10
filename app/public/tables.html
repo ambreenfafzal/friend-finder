@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+    <script src="https://kit.fontawesome.com/04725d9bfc.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+
+    <title>Tables</title>
+</head>
+
+<body>
+    <div class="card-body">
+        <ul id="tableList" class="list-group"></ul>
+      </div>
+
+      <p><a href="#" id="clear">Clear Table</a> | <a href="/api/tables">API Table Link</a> 
+
+</body>
+
+
+<!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS LOADED FROM OUR SERVER -->
+<script type="text/javascript">
+
+  // In this code, jQuery is used to "download" the data from our server
+  // We then dynamically display this content in our table. This is very similar to the group projects you just completed.
+  // It's also very similar to the NYT search application. In fact, I copied a ton of code from there.
+
+  function runTableQuery() {
+    // The AJAX function uses the URL of our API to GET the data associated with it (initially set to localhost)
+    $.ajax({ url: "/api/tables", method: "GET" })
+      .then(function(friends) {
+
+        // Here we then log the tableData to console, where it will show up as an object.
+        console.log(friends);
+        console.log("------------------------------------");
+
+        // Loop through and display each friend
+        for (var i = 0; i < friends.length; i++) {
+
+          // Get a reference to the tableList element and populate it with tables
+          var tableList = $("#tableList");
+
+          // Then display the fields in the HTML (Friend Name, link, score)
+          var listItem = $("<li class='list-group-item mt-4'>");
+
+          listItem.append(
+            $("<h2>").text("Table #" + (i + 1)),
+            $("<hr>"),
+            $("<h2>").text("Name: " + friends[i].name),
+            $("<h2>").text("Link: " + friends[i].photo),
+            $("<h2>").text("score: " + friends[i].scores)
+          );
+
+          tableList.append(listItem);
+        }
+      });
+  }
+
+
+  // This function resets all of the data in our tables. This is intended to let you restart a demo.
+  function clearTable() {
+ 
+    // Clear the tables on the server and then empty the elements on the client
+    $.ajax({ url: "/api/clear", method: "POST" }).then(function() {
+
+      $("#tableList").empty();
+    });
+  }
+
+  $("#clear").on("click", clearTable);
+
+
+  // Run Queries!
+  // ==========================================
+  runTableQuery();
+
+
+
+</script>
+
+</html>

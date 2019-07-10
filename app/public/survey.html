@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" -->
+    <!-- integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+    <script src="https://kit.fontawesome.com/04725d9bfc.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <title>Friend Finder</title>
+</head>
+
+<body>
+    <div class="container">
+
+
+        <h2>Survey Questions</h2>
+
+        <br>
+        <label for="exampleEmailInput">Name*</label>
+        <input class="u-full-width" type="email" placeholder="Type your name here..." id="friend-name">
+        <label for="exampleEmailInput">Link to Photo Image </label>
+        <input class="u-full-width" type="email" placeholder="Enter image URL..." id="photo-link">
+        <br>
+        <label for="exampleEmailInput">Question 1</label>
+        <p>You love gazing at the stars at night.</p>
+        <select id="answer-one">
+            <!-- <option value="Select an option" id="answer-one">Select an option</option> -->
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <br>
+        <label for="exampleEmailInput">Question 2</label>
+        <p>Generally speaking, you rely more on your experience than your imagination.</p>
+        <select id="answer-two">
+
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <br>
+        <label for="exampleEmailInput">Question 3</label>
+        <p>You find it easy to stay relaxed and focused even when there is some pressure.</p>
+        <select id="answer-three">
+
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <br>
+        <br>
+        <br>
+        <button type="submit" class="button">Submit</button>
+        <a href="/tables"><button class="table-button">Go to the table</button></a>
+    </div>
+
+    </div>
+
+
+</body>
+<script type="text/javascript">
+
+
+
+    $(".button").on("click", function (event) {
+        event.preventDefault();
+        console.log("I am clicked.")
+
+        // Here we grab the form elements
+        var newFriend = {
+            name: $("#friend-name").val().trim(),
+            photo: $("#photo-link").val(),
+            scores: [$("#answer-one option:selected ").val(),
+            $("#answer-two option:selected ").val(),
+            $("#answer-three option:selected ").val()]
+        }
+
+        $.post("/api/tables", newFriend,
+            function (data) {
+                $("#friend-name").val("");
+                $("#photo-link").val("");
+                $("#answer-one option:selected").val();
+                $("#answer-two option:selected").val();
+                $("#answer-three option:selected").val();
+
+            })
+
+
+
+    });
+</script>
+
+
+</html>
